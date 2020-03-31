@@ -1,5 +1,5 @@
 {
-  "name": "vue-parallax-background",
+  "name": "@evan-bechtol/vue-parallax-background",
   "version": "0.1.0",
   "author": "Evan Bechtol <evanbechtol@gmail.com>",
   "main": "dist/parallax-background.umd.js",
@@ -51,5 +51,20 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "description": "## Project setup ``` yarn install ```",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evanbechtol/vue-parallax-background.git"
+  },
+  "keywords": [
+    "Vue",
+    "parallax",
+    "background"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evanbechtol/vue-parallax-background/issues"
+  },
+  "homepage": "https://github.com/evanbechtol/vue-parallax-background#readme"
 }
