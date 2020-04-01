@@ -6,14 +6,14 @@
           :style="blockElementHeight"
   >
     <div ref="headerBg" class="header__bg" :class="bgCssClass"></div>
-    <slot ref="parallaxContent" name="content" :class="contentCssClass"/>
+    <slot ref="parallaxContent" name="content" :class="contentCssClass" />
   </div>
 </template>
 
 <script>
   export default {
     name: "ParallaxBackground",
-    data: () => ( {
+    data: () => ({
       bgElement: null,
       lFollowX: 0,
       lFollowY: 0,
@@ -21,7 +21,7 @@
       stuff: "",
       x: 0,
       y: 0
-    } ),
+    }),
 
     props: {
       bgImg: {
@@ -44,6 +44,11 @@
         default: "movemouse"
       },
 
+      fixed: {
+        type: Boolean,
+        default: false
+      },
+
       friction: {
         type: Number,
         default: 1 / 1000
@@ -56,7 +61,7 @@
 
       height: {
         type: String,
-        default: "90"
+        default: "90vh"
       },
 
       speedFactor: {
@@ -66,37 +71,39 @@
     },
 
     computed: {
-      blockElementHeight: function () {
+      blockElementHeight: function() {
         return { height: `${this.height}vh` };
       },
 
-      computedBgImgPath: function () {
-        return require( `@/assets/img/${this.bgImg}` );
+      computedBgImgPath: function() {
+        return require(`@/assets/img/${this.bgImg}`);
       },
 
-      directionValue () {
+      directionValue() {
         return this.direction === "down" ? +1 : -1;
       },
 
-      isScrollEvent: function () {
+      isScrollEvent: function() {
         return this.eventType.toLowerCase() === "scroll";
       },
 
-      bgCssClass: function () {
+      bgCssClass: function() {
         return {
+          isFixed: this.fixed,
+          absolute: !this.fixed,
           parallax__layer: this.isScrollEvent,
           "parallax__layer--back": this.isScrollEvent
         };
       },
 
-      contentCssClass: function () {
+      contentCssClass: function() {
         return {
           parallax__layer: this.isScrollEvent,
           "parallax__layer--base": this.isScrollEvent
         };
       },
 
-      headerCssClass: function () {
+      headerCssClass: function() {
         return {
           parallax: this.isScrollEvent,
           header: !this.isScrollEvent
@@ -104,7 +111,7 @@
       }
     },
 
-    mounted () {
+    mounted() {
       const el = this.getTargetElement();
       const vm = this;
 
@@ -112,100 +119,100 @@
 
       this.setBgImageProperty();
 
-      if ( this.isScrollEvent ) {
+      if (this.isScrollEvent) {
         this.initScroll();
       } else {
-        el.addEventListener( this.eventType, function ( e ) {
-          vm.handlerMouseMove( e );
-        } );
+        el.addEventListener(this.eventType, function(e) {
+          vm.handlerMouseMove(e);
+        });
       }
     },
 
-    beforeDestroy () {
-      window.removeEventListener( "scroll", this.scrollHandler, false );
+    beforeDestroy() {
+      window.removeEventListener("scroll", this.scrollHandler, false);
     },
 
     methods: {
-      getTargetElement () {
-        return this.isScrollEvent ? window : document.querySelector( ".header" );
+      getTargetElement() {
+        return this.isScrollEvent ? window : document.querySelector(".header");
       },
 
-      handlerMouseMove ( e ) {
+      handlerMouseMove(e) {
         const lMouseX = Math.max(
           -100,
-          Math.min( 100, window.innerWidth / 2 - e.clientX )
+          Math.min(100, window.innerWidth / 2 - e.clientX)
         );
 
         const lMouseY = Math.max(
           -100,
-          Math.min( 100, window.innerHeight / 2 - e.clientY )
+          Math.min(100, window.innerHeight / 2 - e.clientY)
         );
 
-        this.lFollowX = ( 20 * lMouseX ) / 100;
-        this.lFollowY = ( 10 * lMouseY ) / 100;
+        this.lFollowX = (20 * lMouseX) / 100;
+        this.lFollowY = (10 * lMouseY) / 100;
       },
 
-      setBgImageProperty () {
+      setBgImageProperty() {
         const hasGradients = this.gradients.length > 0;
         const gradientString = hasGradients ? this.gradients.join() + "," : "";
         this.bgElement.style.backgroundImage = `${gradientString} url('${this.computedBgImgPath}')`;
       },
 
-      translateBackground () {
-        this.x += ( this.lFollowX - this.x ) * this.friction;
-        this.y += ( this.lFollowY - this.y ) * this.friction;
+      translateBackground() {
+        this.x += (this.lFollowX - this.x) * this.friction;
+        this.y += (this.lFollowY - this.y) * this.friction;
         this.bgElement.style.transform = `translate(${this.x}px,  ${this.y}px) scale(1.1)`;
 
-        window.requestAnimationFrame( this.translateBackground );
+        window.requestAnimationFrame(this.translateBackground);
       },
 
-      animateElement () {
+      animateElement() {
         const parentHeight = this.$refs.block.offsetHeight;
         const parallaxHeight = this.$refs.headerBg.offsetHeight;
         const availableOffset = parallaxHeight - parentHeight;
         let animationValue = window.pageYOffset * this.speedFactor;
-        if ( animationValue <= availableOffset && animationValue >= 0 ) {
+        if (animationValue <= availableOffset && animationValue >= 0) {
           this.bgElement.style.transform = `translate3d(0, ${animationValue *
           this.directionValue}px ,0)`;
         }
       },
 
-      scrollHandler () {
-        window.requestAnimationFrame( () => {
-          if ( this.isInView( this.bgElement ) ) {
+      scrollHandler() {
+        window.requestAnimationFrame(() => {
+          if (this.isInView(this.bgElement)) {
             this.animateElement();
           }
-        } );
+        });
       },
 
-      isInView ( el ) {
+      isInView(el) {
         let rect = el.getBoundingClientRect();
         return (
           rect.bottom >= 0 &&
           rect.top <=
-          ( window.innerHeight || document.documentElement.clientHeight )
+          (window.innerHeight || document.documentElement.clientHeight)
         );
       },
 
-      setupListener () {
-        if ( this.mediaQuery.matches ) {
-          window.addEventListener( "scroll", this.scrollHandler, false );
+      setupListener() {
+        if (this.mediaQuery.matches) {
+          window.addEventListener("scroll", this.scrollHandler, false);
         } else {
-          window.removeEventListener( "scroll", this.scrollHandler, false );
+          window.removeEventListener("scroll", this.scrollHandler, false);
         }
       },
 
-      initScroll () {
-        this.mediaQuery = window.matchMedia( this.breakpoint );
-        if ( this.mediaQuery ) {
-          this.mediaQuery.addListener( this.setupListener );
+      initScroll() {
+        this.mediaQuery = window.matchMedia(this.breakpoint);
+        if (this.mediaQuery) {
+          this.mediaQuery.addListener(this.setupListener);
           this.setupListener();
         }
       }
     },
 
     watch: {
-      lFollowX () {
+      lFollowX() {
         this.translateBackground();
       }
     }
@@ -213,50 +220,55 @@
 </script>
 
 <style scoped>
+  .absolute {
+    position: absolute;
+  }
+
+  .fixed {
+    position: fixed;
+  }
+
   .header__bg {
-    position            : absolute;
-    min-height          : 70rem;
-    height              : 100%;
-    width               : 100vw;
-    background-size     : cover; /* Always try to fit elem in box */
-    background-position : top; /* Ensure bg img always at top */
-    scroll-behavior     : smooth;
-    transform           : scale(1.1);
-    overflow-x          : hidden;
-    z-index             : -1;
+    min-height: 70rem;
+    height: 100%;
+    width: 100vw;
+    background-size: cover; /* Always try to fit elem in box */
+    scroll-behavior: smooth;
+    transform: scale(1.1);
+    z-index: -1;
   }
 
   .parallax {
-    perspective : 1px;
-    overflow-x  : hidden;
-    overflow-y  : hidden;
+    perspective: 1px;
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 
   .parallax__layer {
-    position : absolute;
-    top      : 0;
-    right    : 0;
-    bottom   : 0;
-    left     : 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
 
   .parallax__group {
-    position        : relative;
-    height          : 100vh;
-    transform-style : preserve-3d;
+    position: relative;
+    height: 100vh;
+    transform-style: preserve-3d;
   }
 
   .parallax__layer--base {
-    position        : fixed;
-    align-content   : center;
-    justify-content : center;
-    margin          : 0 auto;
-    top             : 0;
-    left            : 0;
-    transform       : translateZ(0) translate(50%, 70%);
+    position: fixed;
+    align-content: center;
+    justify-content: center;
+    margin: 0 auto;
+    top: 0;
+    left: 0;
+    transform: translateZ(0) translate(50%, 70%);
   }
 
   .parallax__layer--back {
-    transform : translateZ(-4px) scale(6);
+    transform: translateZ(-4px) scale(6);
   }
 </style>
