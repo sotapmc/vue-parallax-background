@@ -1,6 +1,6 @@
 {
-  "name": "@evan-bechtol/vue-parallax-background",
-  "version": "0.1.0",
+  "name": "vue-parallax-background",
+  "version": "0.2.0",
   "author": "Evan Bechtol <evanbechtol@gmail.com>",
   "main": "dist/parallax-background.umd.js",
   "module": "dist/parallax-background.esm.js",
@@ -8,7 +8,7 @@
   "browser": {
     "./sfc": "src/parallax-background.vue"
   },
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
