@@ -214,13 +214,14 @@
 
 <style scoped>
   .header__bg {
-    position: relative;
+    position: absolute;
     min-height: 70rem;
+    height: 100%;
     background-size: cover; /* Always try to fit elem in box */
     background-position: top; /* Ensure bg img always at top */
     scroll-behavior: smooth;
     transform: scale(1.1);
-    z-index: 0;
+    z-index: -1;
   }
 
   .parallax {

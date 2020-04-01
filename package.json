@@ -1,6 +1,6 @@
 {
   "name": "vue-parallax-background",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "author": "Evan Bechtol <evanbechtol@gmail.com>",
   "main": "dist/parallax-background.umd.js",
   "module": "dist/parallax-background.esm.js",
