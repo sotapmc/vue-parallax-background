@@ -222,6 +222,7 @@
     background-position : top; /* Ensure bg img always at top */
     scroll-behavior     : smooth;
     transform           : scale(1.1);
+    overflow-x          : hidden;
     z-index             : -1;
   }
 
