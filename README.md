@@ -1,5 +1,5 @@
 # vue-parallax-background
-**Made for user in Vue 2.x** 
+**Made for use in Vue 2.x** 
 
 A lightweight component, whose only dependencies are Vue.js and core.js! Provides parallax effect for components
 with both `mousemove`, and `scroll` events.
