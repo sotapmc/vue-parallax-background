@@ -155,7 +155,7 @@
       setBgImageProperty() {
         const hasGradients = this.gradients.length > 0;
         const gradientString = hasGradients ? this.gradients.join() + "," : "";
-        this.bgElement.style.backgroundImage = `${gradientString} url('${this.computedBgImgPath}')`;
+        this.bgElement.style.backgroundImage = `${gradientString}, url('${this.computedBgImgPath}')`;
       },
 
       translateBackground() {
